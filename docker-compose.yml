@@ -1,0 +1,17 @@
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend/chroma_db:/app/chroma_db
+    environment:
+      - CHROMA_DB_PATH=./chroma_db
+      - EMBEDDING_MODEL=all-MiniLM-L6-v2
+      - OLLAMA_BASE_URL=http://host.docker.internal:11434
+      - OLLAMA_MODEL=qwen2.5:1.5b
+      - CHUNK_SIZE=500
+      - CHUNK_OVERLAP=50
+      - TOP_K_RESULTS=5
+    extra_hosts:
+      - "host.docker.internal:host-gateway"

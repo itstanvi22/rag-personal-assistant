@@ -3,6 +3,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.api.routes import upload, chat
 from app.api.routes import upload, chat, evaluate
+from app.api.routes import upload, chat, evaluate, icms
 
 logging.basicConfig(
     level=logging.INFO,
@@ -26,7 +27,9 @@ app.add_middleware(
 app.include_router(upload.router, prefix="/api/v1", tags=["upload"])
 app.include_router(chat.router, prefix="/api/v1", tags=["chat"])
 app.include_router(evaluate.router, prefix="/api/v1", tags=["evaluate"])
+app.include_router(icms.router, prefix="/api/v1", tags=["icms"])
 
 @app.get("/health")
 async def health_check():
     return {"status": "healthy", "message": "RAG Assistant is running"}
+

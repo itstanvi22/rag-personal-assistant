@@ -4,32 +4,9 @@ A privacy-first document chat system built with RAG (Retrieval-Augmented Generat
 Chat with your PDFs, text files, and markdown documents using a fully local LLM — no data leaves your machine.
 
 ## Architecture
-┌─────────────────────────────────────────────────────┐
-│                    React Frontend                    │
-│         Upload UI + Chat UI + Citations UI          │
-└──────────────────────┬──────────────────────────────┘
-                       │ HTTP
-┌──────────────────────▼──────────────────────────────┐
-│                 FastAPI Backend                      │
-│  /upload          /chat          /evaluate           │
-│     │               │                               │
-│  Ingestion       Query Pipeline                      │
-│  Service         Service                            │
-│     │               │                               │
-│  Parser→        Embedder→                           │
-│  Chunker→       ChromaDB→                           │
-│  Embedder→      BM25→                               │
-│  ChromaDB       RRF Fusion→                         │
-│                 Prompt Builder→                      │
-│                 Qwen3 (Ollama)                       │
-└──────────────────────────────────────────────────────┘
-         │                        │
-┌────────▼────────┐    ┌──────────▼────────┐
-│   ChromaDB      │    │   Ollama           │
-│ (Vector Store)  │    │ (Local LLM)        │
-│ Persisted to    │    │ qwen2.5:1.5b       │
-│ disk via volume │    │ running on host    │
-└─────────────────┘    └────────────────────┘
+Upload → Parse → Chunk → Embed → ChromaDB
+
+Query  → Embed → ChromaDB → BM25 → RRF Fusion → Prompt → LLM → Answer + Citations
 
 ## Tech Stack
 
@@ -97,3 +74,5 @@ docker-compose up --build
 | POST | /api/v1/chat | Chat with documents |
 | POST | /api/v1/evaluate | Evaluate retrieval quality |
 | GET | /health | Health check |
+
+

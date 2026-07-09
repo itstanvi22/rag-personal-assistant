@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import Optional
+from typing import Optional, List
 
 class UploadResponse(BaseModel):
     document_id: str
@@ -7,3 +7,5 @@ class UploadResponse(BaseModel):
     status: str
     chunk_count: Optional[int] = None
     message: str
+    change_type: Optional[str] = None
+    change_title: Optional[str] = None
